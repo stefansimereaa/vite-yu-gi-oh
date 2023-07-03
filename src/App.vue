@@ -8,9 +8,11 @@ export default {
 
   created() {
     axios.get(endpoint).then(res => {
-      const { prevPage, nextPage, totalDocs } = res.data;
+      const { prev, next, totalDocs } = res.data;
       store.pokemons = res.data.docs;
-      this.totalDocs = totalDocs;
+      store.pages.prev = prev;
+      store.pages.next = next;
+      store.totalDocs = totalDocs;
     })
   }
 }
@@ -19,7 +21,7 @@ export default {
 <template>
   <div class="container">
     <!-- Main -->
-    <AppMain />
+    <AppMain :axios="axios" />
   </div>
 </template>
 <style lang="scss" scoped>

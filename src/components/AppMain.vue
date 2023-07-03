@@ -1,26 +1,62 @@
 <script>
+import axios from 'axios';
 import Loader from './AppLoader.vue';
 import { store } from '../data/store';
 export default {
+    props: ['axios'],
     data() {
         return {
             store,
+            totalDocs: store.totalDocs,
             isLoading: true
         }
     },
     components: {
         Loader
     },
+    methods: {
+        nextPage() {
+            if (this.store.nextPage) {
+                this.isLoading = true;
+                axios.get(this.store.next).then(res => {
+                    const { prevPage, nextPage, totalDocs } = res.data;
+                    this.store.pokemons = res.data.docs;
+                    this.store.totalDocs = totalDocs;
+                    this.store.pages.prev = prevPage;
+                    this.store.pages.next = nextPage;
+                    this.isLoading = false;
+                });
+
+            }
+        },
+        prevPage() {
+            if (this.store.prevPage) {
+                this.isLoading = true;
+                axios.get(this.store.pages.prev).then(res => {
+                    const { prevPage, nextPage, totalDocs } = res.data;
+                    this.store.pokemons = res.data.docs;
+                    this.store.totalDocs = totalDocs;
+                    this.store.pages.prev = prevPage;
+                    this.store.pages.next = nextPage;
+                    this.isLoading = false;
+                });
+
+            }
+        }
+    }
 }
 </script>
 
 <template>
+    <!-- Container header mass buttons -->
     <div class="container-header">
-        <button class="btn btn-primary me-3">Prev Page</button>
+        <button class="btn btn-primary me-3" @click="prevPage()" :disabled="!store.pages.prev">Prev Page</button>
         <h4>Pokemon scoperti {{ store.pokemons.length }} di {{ totalDocs }}</h4>
-        <button class="btn btn-primary ms-3">Next Page</button>
+        <button class="btn btn-primary ms-3" @click="nextPage()" :disabled="!store.pages.next">Next Page</button>
+
     </div>
     <Loader v-if="isLoading" />
+    <!-- Pokedex -->
     <div class="container-pokedex">
         <div class="pokemon-list">
             <div v-for="pokemon in store.pokemons" :key="pokemon._id" class="card" :class="pokemon.type1.toLowerCase()">
