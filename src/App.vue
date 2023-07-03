@@ -1,14 +1,18 @@
 <script>
 import axios from 'axios';
+const endpoint = 'https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons'
+import { store } from './data/store.js';
 import AppMain from './components/AppMain.vue';
 export default {
-  data() {
-    return {};
-    components: {
-      AppMain;
-    }
-  },
-  components: { AppMain }
+  components: { AppMain },
+
+  created() {
+    axios.get(endpoint).then(res => {
+      const { prevPage, nextPage, totalDocs } = res.data;
+      store.pokemons = res.data.docs;
+      this.totalDocs = totalDocs;
+    })
+  }
 }
 </script >
 
