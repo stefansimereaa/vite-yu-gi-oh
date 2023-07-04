@@ -15,7 +15,7 @@ export default {
 <template>
     <div class="container container-pokedex">
         <div class="pokemon-list">
-            <div class="row row-cols-2 row-cols-md-3 row-cols-xl-5 gy-5">
+            <div class="row row-cols-2 row-cols-md-3 row-cols-lg-5 gy-5">
                 <div class="col" v-for="pokemon in pokemons">
                     <AppPokemonsCard :key="pokemon.id" :id="pokemon.number" :img="pokemon.imageUrl" :name="pokemon.name"
                         :type="pokemon.type1.toLowerCase()" />
