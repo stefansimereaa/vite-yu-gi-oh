@@ -1,53 +1,45 @@
 <script>
+import { store } from '../data/store';
+
 export default {
     data() {
         return {
-            isLoading: true
+            store,
         };
     },
-    created() {
-        // Simulazione di un ritardo per i dati di caricamento
-        setTimeout(() => {
-            this.isLoading = false;
-        }, 500);
-    }
 };
 </script>
 
 <template>
-    <div class="loader-container" v-if="isLoading">
-        <h1>Loading...</h1>
-        <div class="loader"></div>
+    <div v-if="store.isLoading" class="layover white-background">
+        <figure>
+            <span class="loading-text">Loading...</span>
+            <img class="loader" src="../assets/loading.gif" alt="PokeLoader" />
+        </figure>
     </div>
 </template>
-  
-  
+
 <style scoped>
-.loader-container {
+.layover {
+    background-color: rgba(0, 0, 0, 1);
+    position: fixed;
+    inset: 0;
     display: flex;
-    justify-content: center;
     align-items: center;
-    height: 100vh;
+    justify-content: center;
+}
+
+.white-background {
+    background-color: white;
 }
 
 .loader {
-    border: 8px solid #f3f3f3;
-    border-top: 8px solid #3498db;
-    border-radius: 50%;
-    width: 60px;
-    height: 60px;
-    margin-left: 50px;
-    animation: spin 2s linear infinite;
+    width: 200px;
+    height: 200px;
 }
 
-@keyframes spin {
-    0% {
-        transform: rotate(0deg);
-    }
-
-    100% {
-        transform: rotate(360deg);
-    }
+.loading-text {
+    font-size: 30px;
+    margin-right: 30px;
 }
 </style>
-  

@@ -1,7 +1,9 @@
 @use './vars' as *;
+@use 'bootstrap/scss/bootstrap';
 
-body {
+#app{
     font-family: $main-font;
+    background-color: rebeccapurple;
 }
 
 .container {
