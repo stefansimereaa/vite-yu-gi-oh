@@ -27,7 +27,12 @@ export default {
     <header class="container text-center my-4">
         <img class="logo" src="../assets/logo.png" alt="logo" />
         <div class="search-buttons">
-            <select class="form-select form-select-sm" v-model="selectedType">
+            <!-- Search name Pokemons -->
+            <div class="input-group">
+                <input type="text" class="form-control" placeholder="Cerca il tuo pokemon">
+            </div>
+            <!-- Select for type Pokemons -->
+            <select class="form-select" v-model="selectedType">
                 <option value="">Tutti i tipi</option>
                 <option v-for="type in types" :key="type" :value="type">{{ type }}</option>
             </select>
@@ -37,8 +42,23 @@ export default {
 
 <style scoped>
 .logo {
-    margin-top: 30px;
+    margin-top: 20px;
     margin-bottom: 20px;
-    height: 130px;
+    height: 100px;
+}
+
+.search-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.input-group {
+    width: 500px;
+    margin-right: 20px;
+}
+
+.form-select {
+    width: 500px;
 }
 </style>

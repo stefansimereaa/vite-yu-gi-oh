@@ -31,13 +31,13 @@ export default {
     background-color: white;
     text-align: center;
     border-radius: 20px;
-    padding: 1rem 2rem;
+    padding: 0.5rem 1rem;
 
     figure {
         background-color: white;
         border-radius: 50%;
-        width: 150px;
-        height: 150px;
+        width: 100px;
+        height: 100px;
         display: flex;
         justify-content: center;
         align-items: center;
