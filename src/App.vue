@@ -31,6 +31,7 @@ export default {
   data() {
     return {
       store,
+      types: [],
     };
   },
 
@@ -38,8 +39,25 @@ export default {
 
   created() {
     fetchPokemons();
+    this.fetchTypes();
+  },
+
+  methods: {
+    fetchTypes() {
+      const typesUrl = 'https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons/types1';
+
+      axios
+        .get(typesUrl)
+        .then(res => {
+          this.types = res.data;
+        })
+        .catch(e => {
+          console.error(e);
+        });
+    },
   },
 };
+
 </script >
 
 <template>
@@ -47,7 +65,7 @@ export default {
     <!-- Component Button Prev -->
     <AppArrowsPokedex direction="prev" />
     <!-- Component App Header -->
-    <AppHeader />
+    <AppHeader :types="types" />
     <!-- Component App Main -->
     <AppMain />
     <!-- Component App Loader -->
@@ -56,6 +74,7 @@ export default {
     <AppArrowsPokedex direction="next" />
   </div>
 </template>
+
 <style lang="scss" scoped>
 @import '../src/assets/scss/style.scss';
 </style>
