@@ -27,51 +27,46 @@ export const fetchPokemons = (page = '') => {
     });
 };
 
+const fetchPokemonsTypes = () => {
+  const url = endpoint + '/types1';
+  axios
+    .get(url)
+    .then(res => {
+      store.pokemons.types = res.data;
+    })
+    .catch(e => {
+      console.error(e);
+    });
+};
+
 export default {
-  data() {
-    return {
-      store,
-      types: ['Bug', 'Dark', 'Dragon', 'Electric', 'Fairy', 'Fighting', 'Fire', 'Flying', 'Ghost', 'Grass', 'Ground', 'Ice', 'Normal', 'Poison', 'Psychic', 'Rock', 'Steel', 'Water'],
-    };
+  methods: {
+    changePage(page) {
+      fetchPokemons(page);
+    },
   },
 
   components: { AppArrowsPokedex, AppMain, AppHeader, AppLoader },
 
   created() {
     fetchPokemons();
-    this.fetchTypes();
-  },
-
-  methods: {
-    fetchTypes() {
-      const typesUrl = 'https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons/types1';
-
-      axios
-        .get(typesUrl)
-        .then(res => {
-          this.types = res.data;
-        })
-        .catch(e => {
-          console.error(e);
-        });
-    },
+    fetchPokemonsTypes();
   },
 };
-
 </script >
 
 <template>
   <div class="container-background">
     <!-- Component Button Prev -->
-    <AppArrowsPokedex direction="prev" />
+    <AppArrowsPokedex direction="prev" @change-page="changePage" />
     <!-- Component App Header -->
-    <AppHeader :types="types" />
+    <AppHeader />
     <!-- Component App Main -->
     <AppMain />
     <!-- Component App Loader -->
     <AppLoader />
     <!-- Component Button Next -->
-    <AppArrowsPokedex direction="next" />
+    <AppArrowsPokedex direction="next" @change-page="changePage" />
   </div>
 </template>
 

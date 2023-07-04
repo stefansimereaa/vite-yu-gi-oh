@@ -1,6 +1,8 @@
 <script>
 import axios from 'axios';
+import AppSelectedType from './AppSelectedType.vue';
 import { store } from '../data/store';
+
 export default {
     data() {
         return {
@@ -10,28 +12,16 @@ export default {
             originalList: [],
         };
     },
-    props: {
-        types: {
-            type: Array,
-            required: true,
-        },
+    components: {
+        AppSelectedType
     },
-    watch: {
-        selectedType: {
-            immediate: true,
-            handler(newType) {
-                this.fetchPokemonsByType(newType);
-            },
-        },
-    },
-    computed: {
-        typeOptions() {
-            return ['', ...this.types];
-        },
+    mounted() {
+        this.fetchPokemonsByType(this.selectedType);
     },
     methods: {
         fetchPokemonsByType(type) {
             const url = `https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?type=${type}`;
+
             axios
                 .get(url)
                 .then(res => {
@@ -42,16 +32,22 @@ export default {
                     console.error(e);
                 });
         },
+        changedTypesFilter() {
+            console.log('changed');
+            this.searchPokemons();
+        },
         searchPokemons() {
             if (this.searchedTerm) {
                 const term = this.searchedTerm.toLowerCase();
-                const filteredPokemons = this.originalList.filter((pokemon) =>
-                    pokemon.name.toLowerCase().includes(term)
-                );
+                const filteredPokemons = this.originalList.filter(pokemon => pokemon.name.toLowerCase().includes(term));
                 this.store.pokemons.list = filteredPokemons;
             } else {
-                this.store.pokemons.list = this.originalList;
+                this.resetSearch();
             }
+        },
+        resetSearch() {
+            this.searchedTerm = '';
+            this.store.pokemons.list = this.originalList;
         },
     },
 };
@@ -60,18 +56,16 @@ export default {
 <template>
     <header class="container text-center my-4">
         <img class="logo" src="../assets/logo.png" alt="logo" />
-        <!-- Header buttons for search -->
         <div class="search-buttons">
             <!-- Search name Pokemons -->
             <div class="input-group">
                 <input type="text" class="form-control" v-model="searchedTerm" @input="searchPokemons"
                     placeholder="Cerca il tuo pokemon">
+                <button class="btn btn-secondary" @click="resetSearch">Cancella ricerca</button>
             </div>
-            <!-- Select for type Pokemons -->
-            <select class="form-select" v-model="selectedType">
-                <option value="">Tutti i tipi</option>
-                <option v-for="type in types" :key="type" :value="type">{{ type }}</option>
-            </select>
+            <!-- Search type Pokemons -->
+            <AppSelectedType :options="store.pokemons.types" default-option="Tutti i tipi"
+                @selected-new-option="changedTypesFilter" />
         </div>
     </header>
 </template>
