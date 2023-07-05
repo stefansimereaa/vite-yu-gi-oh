@@ -8,7 +8,7 @@ export default {
         return store;
     },
     components: { AppSelectedType, AppSearchBar },
-    emits: ['selected-type-filter', 'search'],
+    emits: ['selected-type', 'search'],
 };
 </script>
 
@@ -20,7 +20,7 @@ export default {
             <AppSearchBar classes="flex-grow-1 mx-5" placeholder="Cerca un pokemon..." @search="$emit('search', $event)" />
             <!-- Search Type Pokemons -->
             <AppSelectedType :options="pokemons.types" default-option="Tutti i tipi"
-                @selected-new-option="$emit('selected-type-filter', $event)" />
+                @selected-new-option="$emit('selected-type', $event)" />
         </div>
     </header>
 </template>

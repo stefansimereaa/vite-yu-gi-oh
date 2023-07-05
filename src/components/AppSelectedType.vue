@@ -12,13 +12,13 @@ export default {
             default: '',
         },
     },
-    emits: ['selected-new-option'],
+    emits: ['changed-option'],
 };
 </script>
 
 <template>
     <!-- Select for type of pokemons -->
-    <select v-model="selectedOption" @change="$emit('selected-new-option', selectedOption)">
+    <select v-model="selectedOption" @change="$emit('changed-option', selectedOption)">
         <option value="">{{ defaultOption }}</option>
         <option v-for="option in options" :key="option" :class="option.toLowerCase()">
             {{ option }}

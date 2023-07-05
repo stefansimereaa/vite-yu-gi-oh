@@ -85,7 +85,7 @@ export default {
     <!-- Component Button Prev -->
     <AppArrowsPokedex direction="prev" @change-page="changePage" />
     <!-- Component App Header -->
-    <AppHeader @selected-type-filter="changePokemonTypeFilter" @search="changeSearchWord" />
+    <AppHeader @selected-type="changePokemonTypeFilter" @search="changeSearchWord" />
     <!-- Component App Main -->
     <AppMain />
     <!-- Component App Loader -->
