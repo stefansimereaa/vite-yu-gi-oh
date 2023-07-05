@@ -1,34 +1,27 @@
 <script>
 import { store } from '../data/store';
-import { fetchPokemons } from '../App.vue';
 
 export default {
-    data() {
-        return {
-            store,
-        };
-    },
-
     props: {
         direction: String,
     },
-
     computed: {
         page() {
             return store.pokemons.pages[this.direction];
         },
     },
-
     methods: {
-        fetchPage() {
-            fetchPokemons(this.page);
+        changePage() {
+            this.$emit('change-page', this.page);
         },
     },
+    emits: ['change-page'],
 };
 </script>
 
 <template>
-    <div v-if="page" @click="fetchPage" :class="`arrows-pokedex ${direction}`">
+    <!-- Arrows pokedex -->
+    <div v-if="page" @click="changePage" :class="`arrows-pokedex ${direction}`">
         <div class="button-pikachu">
             <span class="text-btn">next</span>
             <img class="pikachu" src="../assets/Pikachu.png" alt="Pikachu" />
@@ -53,7 +46,7 @@ export default {
     border-bottom: 50px solid transparent;
 
     &:hover {
-        scale: 1.5;
+        scale: 1.3;
     }
 }
 
@@ -75,10 +68,10 @@ export default {
 }
 
 .pikachu {
-    width: 100px;
-    height: 100px;
+    width: 90px;
+    height: 90px;
     position: absolute;
-    top: 50%;
+    top: 60%;
     left: 50%;
     transform: translate(-50%, -50%);
 }

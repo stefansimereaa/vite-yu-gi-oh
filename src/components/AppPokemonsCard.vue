@@ -10,6 +10,7 @@ export default {
 </script>
 
 <template>
+    <!-- Pokemons card -->
     <div :class="`pokemon-card ${type}`">
         <figure>
             <img class="img-fluid" :src="img" :alt="name" />
@@ -33,6 +34,7 @@ export default {
     border-radius: 20px;
     padding: 0.5rem 1rem;
 
+    // Pokemons img
     figure {
         background-color: white;
         border-radius: 50%;

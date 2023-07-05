@@ -1,5 +1,10 @@
 <script>
 export default {
+    data() {
+        return {
+            selectedOption: '',
+        };
+    },
     props: {
         options: Array,
         defaultOption: {
@@ -12,8 +17,9 @@ export default {
 </script>
 
 <template>
-    <select @change="$emit('selected-new-option')">
-        <option>{{ defaultOption }}</option>
+    <!-- Select for type of pokemons -->
+    <select v-model="selectedOption" @change="$emit('selected-new-option', selectedOption)">
+        <option value="">{{ defaultOption }}</option>
         <option v-for="option in options" :key="option" :class="option.toLowerCase()">
             {{ option }}
         </option>
@@ -22,4 +28,9 @@ export default {
 
 <style lang="scss" scoped>
 @use '../assets/scss/vars' as *;
+
+select {
+    padding: 14px;
+    cursor: pointer;
+}
 </style>

@@ -11,6 +11,7 @@ export default {
 </script>
 
 <template>
+    <!-- Loader loading data -->
     <div v-if="store.isLoading" class="layover white-background">
         <figure>
             <span class="loading-text">Loading...</span>

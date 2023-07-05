@@ -1,55 +1,14 @@
 <script>
-import axios from 'axios';
 import AppSelectedType from './AppSelectedType.vue';
+import AppSearchBar from './AppSearchBar.vue';
 import { store } from '../data/store';
 
 export default {
     data() {
-        return {
-            store,
-            selectedType: '',
-            searchedTerm: '',
-            originalList: [],
-        };
+        return store;
     },
-    components: {
-        AppSelectedType
-    },
-    mounted() {
-        this.fetchPokemonsByType(this.selectedType);
-    },
-    methods: {
-        fetchPokemonsByType(type) {
-            const url = `https://41tyokboji.execute-api.eu-central-1.amazonaws.com/dev/api/v1/pokemons?type=${type}`;
-
-            axios
-                .get(url)
-                .then(res => {
-                    this.store.pokemons.list = res.data.docs;
-                    this.originalList = res.data.docs;
-                })
-                .catch(e => {
-                    console.error(e);
-                });
-        },
-        changedTypesFilter() {
-            console.log('changed');
-            this.searchPokemons();
-        },
-        searchPokemons() {
-            if (this.searchedTerm) {
-                const term = this.searchedTerm.toLowerCase();
-                const filteredPokemons = this.originalList.filter(pokemon => pokemon.name.toLowerCase().includes(term));
-                this.store.pokemons.list = filteredPokemons;
-            } else {
-                this.resetSearch();
-            }
-        },
-        resetSearch() {
-            this.searchedTerm = '';
-            this.store.pokemons.list = this.originalList;
-        },
-    },
+    components: { AppSelectedType, AppSearchBar },
+    emits: ['selected-type-filter', 'search'],
 };
 </script>
 
@@ -58,14 +17,10 @@ export default {
         <img class="logo" src="../assets/logo.png" alt="logo" />
         <div class="search-buttons">
             <!-- Search name Pokemons -->
-            <div class="input-group">
-                <input type="text" class="form-control" v-model="searchedTerm" @input="searchPokemons"
-                    placeholder="Cerca il tuo pokemon">
-                <button class="btn btn-secondary" @click="resetSearch">Cancella ricerca</button>
-            </div>
-            <!-- Search type Pokemons -->
-            <AppSelectedType :options="store.pokemons.types" default-option="Tutti i tipi"
-                @selected-new-option="changedTypesFilter" />
+            <AppSearchBar classes="flex-grow-1 mx-5" placeholder="Cerca un pokemon..." @search="$emit('search', $event)" />
+            <!-- Search Type Pokemons -->
+            <AppSelectedType :options="pokemons.types" default-option="Tutti i tipi"
+                @selected-new-option="$emit('selected-type-filter', $event)" />
         </div>
     </header>
 </template>
